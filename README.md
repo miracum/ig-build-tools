@@ -7,7 +7,7 @@ A container image including useful tools for building FHIR implementation guides
 Mount a local file system containing a FHIR Shorthand project:
 
 ```sh
-docker run --rm -it -v $PWD/example/:/usr/src/build ghcr.io/miracum/ig-build-tools:v1.0.0
+docker run --rm -it -v $PWD/example/:/usr/src/build ghcr.io/miracum/ig-build-tools:latest
 ```
 
 Then within the container:
