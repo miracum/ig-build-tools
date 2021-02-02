@@ -1,6 +1,7 @@
 FROM openjdk:11-jre
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
+# hadolint ignore=DL3008,DL3028
 RUN apt-get update && \
     apt-get install -y --no-install-recommends curl sshpass ruby-full build-essential zlib1g-dev && \
     curl -sL https://deb.nodesource.com/setup_14.x | bash - && \
