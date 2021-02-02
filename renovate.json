@@ -31,7 +31,8 @@
       "extractVersion": "^(?<version>.*)$"
     },
     {
-      "updateTypes": ["minor", "patch", "pin", "digest"]
+      "updateTypes": ["minor", "patch", "pin", "digest"],
+      "automerge": true
     }
   ]
 }
