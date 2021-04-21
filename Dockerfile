@@ -10,7 +10,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/* && \
     gem install jekyll bundler
 
-ENV PUBLISHER_VERSION=1.1.66
+ENV PUBLISHER_VERSION=1.1.67
 ENV PUBLISHER_DOWNLOAD_URL="https://github.com/HL7/fhir-ig-publisher/releases/download/${PUBLISHER_VERSION}/publisher.jar"
 
 ENV SUSHI_VERSION=1.3.1
