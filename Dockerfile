@@ -13,7 +13,7 @@ RUN apt-get update && \
 ENV PUBLISHER_VERSION=1.1.92
 ENV PUBLISHER_DOWNLOAD_URL="https://github.com/HL7/fhir-ig-publisher/releases/download/${PUBLISHER_VERSION}/publisher.jar"
 
-ENV SUSHI_VERSION=2.2.4
+ENV SUSHI_VERSION=2.2.5
 RUN npm install -g fsh-sushi@${SUSHI_VERSION} && \
     curl -LSs $PUBLISHER_DOWNLOAD_URL --output /usr/local/bin/publisher.jar && \
     chmod +x /usr/local/bin/publisher.jar
