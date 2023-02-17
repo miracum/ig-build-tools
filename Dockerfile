@@ -1,4 +1,4 @@
-FROM openjdk:11-jre
+FROM openjdk:11.0.16-jre
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 # hadolint ignore=DL3008,DL3028
