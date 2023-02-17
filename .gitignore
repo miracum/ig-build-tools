@@ -3,3 +3,5 @@
 /example/output
 /example/input-cache
 /example/fsh-generated
+
+megalinter-reports/
