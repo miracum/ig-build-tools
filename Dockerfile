@@ -1,23 +1,33 @@
+# syntax=docker/dockerfile:1.4
 FROM docker.io/library/eclipse-temurin:11-jre@sha256:03cd7f5583a8ba659923a311b8a2452a9786bc275b808a5d7359f677bdf4e6a2
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+WORKDIR /opt/ig-build-tools
+ENV NO_UPDATE_NOTIFIER=true \
+    NODE_ENV=production \
+    PATH="$PATH:/opt/ig-build-tools/node_modules/.bin:/root/.dotnet/tools" \
+    JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF-8"
 
 # hadolint ignore=DL3008,DL3028
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends curl sshpass ruby-full build-essential zlib1g-dev && \
-    curl -sL https://deb.nodesource.com/setup_14.x | bash - && \
-    apt-get install -y --no-install-recommends nodejs && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/* && \
-    gem install jekyll bundler
+RUN <<EOF
+apt-get update
+apt-get install -y --no-install-recommends curl sshpass ruby-full build-essential zlib1g-dev dotnet-sdk-6.0
+curl -sL https://deb.nodesource.com/setup_18.x | bash -
+apt-get install -y --no-install-recommends nodejs
+apt-get clean
+rm -rf /var/lib/apt/lists/*
+gem install jekyll bundler
+dotnet tool install --global Firely.Terminal --version 3.1.0
+EOF
+
+COPY package*.json .
+RUN npm clean-install
 
 ENV PUBLISHER_VERSION=1.3.6
 ENV PUBLISHER_DOWNLOAD_URL="https://github.com/HL7/fhir-ig-publisher/releases/download/${PUBLISHER_VERSION}/publisher.jar"
+RUN <<EOF
+curl -LSs $PUBLISHER_DOWNLOAD_URL --output /usr/local/bin/publisher.jar
+chmod +x /usr/local/bin/publisher.jar
+EOF
 
-ENV SUSHI_VERSION=2.10.1
-RUN npm install -g fsh-sushi@${SUSHI_VERSION} && \
-    curl -LSs $PUBLISHER_DOWNLOAD_URL --output /usr/local/bin/publisher.jar && \
-    chmod +x /usr/local/bin/publisher.jar
-
-ENV JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF-8"
-WORKDIR /usr/src/build
+WORKDIR /opt/ig-build-tools/workspace
 CMD ["/bin/bash"]

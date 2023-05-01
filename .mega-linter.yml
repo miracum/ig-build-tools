@@ -10,3 +10,7 @@ DISABLE_LINTERS:
 
 SHOW_ELAPSED_TIME: true
 FILEIO_REPORTER: false
+
+REPOSITORY_TRIVY_ARGUMENTS:
+  - "--severity=HIGH,CRITICAL"
+  - "--ignore-unfixed"

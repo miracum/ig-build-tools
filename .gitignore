@@ -5,3 +5,5 @@
 /example/fsh-generated
 
 megalinter-reports/
+
+node_modules/
