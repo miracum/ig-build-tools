@@ -10,10 +10,10 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/* && \
     gem install jekyll bundler
 
-ENV PUBLISHER_VERSION=1.2.38
+ENV PUBLISHER_VERSION=1.3.6
 ENV PUBLISHER_DOWNLOAD_URL="https://github.com/HL7/fhir-ig-publisher/releases/download/${PUBLISHER_VERSION}/publisher.jar"
 
-ENV SUSHI_VERSION=2.9.0
+ENV SUSHI_VERSION=2.10.1
 RUN npm install -g fsh-sushi@${SUSHI_VERSION} && \
     curl -LSs $PUBLISHER_DOWNLOAD_URL --output /usr/local/bin/publisher.jar && \
     chmod +x /usr/local/bin/publisher.jar
