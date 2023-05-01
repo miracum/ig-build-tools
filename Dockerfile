@@ -1,4 +1,4 @@
-FROM docker.io/library/eclipse-temurin:11-jre@sha256:3a68c6619fb2cba6f6f8edde53fcc688f784f92ba653a08f90b3dd99b106e326
+FROM docker.io/library/eclipse-temurin:11-jre@sha256:03cd7f5583a8ba659923a311b8a2452a9786bc275b808a5d7359f677bdf4e6a2
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 # hadolint ignore=DL3008,DL3028
