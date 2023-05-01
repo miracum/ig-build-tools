@@ -7,19 +7,9 @@
       "matchStrings": ["PUBLISHER_VERSION=(?<currentValue>.*?)\n"],
       "depNameTemplate": "HL7/fhir-ig-publisher",
       "datasourceTemplate": "github-releases"
-    },
-    {
-      "fileMatch": ["(^|/)Dockerfile$"],
-      "matchStrings": ["SUSHI_VERSION=(?<currentValue>.*?)\n"],
-      "depNameTemplate": "FHIR/sushi",
-      "datasourceTemplate": "github-releases"
     }
   ],
   "packageRules": [
-    {
-      "packageNames": ["FHIR/sushi"],
-      "extractVersion": "^v(?<version>.*)$"
-    },
     {
       "packageNames": ["HL7/fhir-ig-publisher"],
       "extractVersion": "^(?<version>.*)$"
