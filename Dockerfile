@@ -22,7 +22,7 @@ EOF
 COPY package*.json .
 RUN npm clean-install
 
-ENV PUBLISHER_VERSION=1.3.6
+ENV PUBLISHER_VERSION=1.3.13
 ENV PUBLISHER_DOWNLOAD_URL="https://github.com/HL7/fhir-ig-publisher/releases/download/${PUBLISHER_VERSION}/publisher.jar"
 RUN <<EOF
 curl -LSs $PUBLISHER_DOWNLOAD_URL --output /usr/local/bin/publisher.jar
