@@ -1,5 +1,6 @@
 # syntax=docker/dockerfile:1.4
 FROM docker.io/library/eclipse-temurin:11-jre@sha256:fa8625d6fef95cbf887d1e23cb6e32d280da0183f3525e9b50134be50123347e
+SHELL ["/bin/sh", "-c"]
 WORKDIR /opt/ig-build-tools
 ENV NO_UPDATE_NOTIFIER=true \
     NODE_ENV=production \
