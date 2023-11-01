@@ -1,5 +1,9 @@
 # ig-build-tools
 
+![License](https://img.shields.io/github/license/miracum/ig-build-tools)
+[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/miracum/ig-build-tools/badge)](https://api.securityscorecards.dev/projects/github.com/miracum/ig-build-tools)
+[![SLSA 3](https://slsa.dev/images/gh-badge-level3.svg)](https://slsa.dev)
+
 A container image including useful tools for building FHIR implementation guides.
 
 ## Run
