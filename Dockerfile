@@ -4,7 +4,6 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 WORKDIR /opt/ig-build-tools
 ENV NO_UPDATE_NOTIFIER=true \
     NODE_ENV=production \
-    PATH="$PATH:/opt/ig-build-tools/node_modules/.bin:/root/.dotnet/tools" \
     JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF-8" \
     NODE_MAJOR=18
 
@@ -18,12 +17,8 @@ echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.co
 apt-get update
 apt-get install -y nodejs npm
 
-npm --version
-
 apt-get clean
 rm -rf /var/lib/apt/lists/*
-
-npm --version
 
 gem install jekyll bundler
 dotnet tool install --global Firely.Terminal --version 3.1.0
@@ -39,5 +34,6 @@ curl -LSs "$PUBLISHER_DOWNLOAD_URL" --output /usr/local/bin/publisher.jar
 chmod +x /usr/local/bin/publisher.jar
 EOF
 
+ENV PATH="$PATH:/opt/ig-build-tools/node_modules/.bin:/root/.dotnet/tools"
 WORKDIR /opt/ig-build-tools/workspace
 ENTRYPOINT ["/bin/bash"]
