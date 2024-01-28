@@ -1,21 +1,35 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["github>miracum/.github//renovate/default"],
-  "regexManagers": [
+  "extends": [
+    "github>miracum/.github//renovate/default"
+  ],
+  "customManagers": [
     {
-      "fileMatch": ["(^|/)Dockerfile$"],
-      "matchStrings": ["PUBLISHER_VERSION=(?<currentValue>.*?)\n"],
+      "customType": "regex",
+      "fileMatch": [
+        "(^|/)Dockerfile$"
+      ],
+      "matchStrings": [
+        "PUBLISHER_VERSION=(?<currentValue>.*?)\n"
+      ],
       "depNameTemplate": "HL7/fhir-ig-publisher",
       "datasourceTemplate": "github-releases"
     }
   ],
   "packageRules": [
     {
-      "packageNames": ["HL7/fhir-ig-publisher"],
+      "matchPackageNames": [
+        "HL7/fhir-ig-publisher"
+      ],
       "extractVersion": "^(?<version>.*)$"
     },
     {
-      "updateTypes": ["minor", "patch", "pin", "digest"],
+      "matchUpdateTypes": [
+        "minor",
+        "patch",
+        "pin",
+        "digest"
+      ],
       "automerge": true
     }
   ]
