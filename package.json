@@ -9,6 +9,6 @@
   "author": "",
   "license": "Apache-2.0",
   "dependencies": {
-    "fsh-sushi": "3.6.1"
+    "fsh-sushi": "3.7.0"
   }
 }
