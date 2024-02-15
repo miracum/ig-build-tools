@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1.6@sha256:ac85f380a63b13dfcefa89046420e1781752bab202122f8f50032edf31be0021
-FROM docker.io/library/eclipse-temurin:11-jre@sha256:b57a849e24f2bb2a62eb438768b3f2196b85d987fb26479a215e96c8ec4a82a9
+FROM docker.io/library/eclipse-temurin:11-jre@sha256:f8baee028fb58a7a0cf836ee27909843f42c074f54df0858ff259daddf3f6bc4
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 WORKDIR /opt/ig-build-tools
 ENV NO_UPDATE_NOTIFIER=true \
