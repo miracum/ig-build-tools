@@ -1,11 +1,11 @@
-# syntax=docker/dockerfile:1.6@sha256:ac85f380a63b13dfcefa89046420e1781752bab202122f8f50032edf31be0021
 FROM docker.io/library/eclipse-temurin:11-jre@sha256:05ee511056c2991a5e60fd6659a8d6aba93163c858ee545413a78b5b9842c4d8
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 WORKDIR /opt/ig-build-tools
 ENV NO_UPDATE_NOTIFIER=true \
     NODE_ENV=production \
     JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF-8" \
-    NODE_MAJOR=18
+    NODE_MAJOR=18 \
+    DOTNET_CLI_TELEMETRY_OPTOUT=1
 
 # hadolint ignore=DL3008,DL3028
 RUN <<EOF
@@ -21,8 +21,10 @@ apt-get clean
 rm -rf /var/lib/apt/lists/*
 
 gem install jekyll bundler
-dotnet tool install --global Firely.Terminal --version 3.1.0
 EOF
+
+COPY .config/ .
+RUN dotnet tool restore
 
 COPY package*.json .
 RUN npm clean-install
