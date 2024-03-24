@@ -4,9 +4,9 @@ WORKDIR /opt/ig-build-tools
 ENV NO_UPDATE_NOTIFIER=true \
     NODE_ENV=production \
     JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF-8" \
-    NODE_MAJOR=18 \
-    DOTNET_CLI_TELEMETRY_OPTOUT=1
-
+    NODE_MAJOR=20 \
+    DOTNET_CLI_TELEMETRY_OPTOUT=1 \
+    PATH="$PATH:/opt/ig-build-tools/node_modules/.bin:/root/.dotnet/tools"
 # hadolint ignore=DL3008,DL3028
 RUN <<EOF
 apt-get update
@@ -21,13 +21,16 @@ apt-get clean
 rm -rf /var/lib/apt/lists/*
 
 gem install jekyll bundler
+
+dotnet tool install --global Firely.Terminal --version 3.2.0-beta-1
+fhir --version
 EOF
 
-COPY .config/ .
-RUN dotnet tool restore
-
 COPY package*.json .
-RUN npm clean-install
+RUN <<EOF
+npm clean-install
+sushi --version
+EOF
 
 ENV PUBLISHER_VERSION=1.6.0
 ENV PUBLISHER_DOWNLOAD_URL="https://github.com/HL7/fhir-ig-publisher/releases/download/${PUBLISHER_VERSION}/publisher.jar"
@@ -36,6 +39,5 @@ curl -LSs "$PUBLISHER_DOWNLOAD_URL" --output /usr/local/bin/publisher.jar
 chmod +x /usr/local/bin/publisher.jar
 EOF
 
-ENV PATH="$PATH:/opt/ig-build-tools/node_modules/.bin:/root/.dotnet/tools"
 WORKDIR /opt/ig-build-tools/workspace
 ENTRYPOINT ["/bin/bash"]
