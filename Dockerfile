@@ -32,7 +32,7 @@ npm clean-install
 sushi --version
 EOF
 
-ENV PUBLISHER_VERSION=1.6.0
+ENV PUBLISHER_VERSION=1.6.3
 ENV PUBLISHER_DOWNLOAD_URL="https://github.com/HL7/fhir-ig-publisher/releases/download/${PUBLISHER_VERSION}/publisher.jar"
 RUN <<EOF
 curl -LSs "$PUBLISHER_DOWNLOAD_URL" --output /usr/local/bin/publisher.jar
