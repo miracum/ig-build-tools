@@ -4,17 +4,14 @@
   "customManagers": [
     {
       "customType": "regex",
-      "fileMatch": ["(^|/)Dockerfile$"],
-      "matchStrings": ["PUBLISHER_VERSION=(?<currentValue>.*?)\n"],
-      "depNameTemplate": "HL7/fhir-ig-publisher",
-      "datasourceTemplate": "github-releases"
+      "description": "Update _VERSION variables in Dockerfiles",
+      "fileMatch": ["(^|/|\\.)Dockerfile$"],
+      "matchStrings": [
+        "# renovate: datasource=(?<datasource>[a-z-]+?)(?: depName=(?<depName>.+?))? packageName=(?<packageName>.+?)(?: versioning=(?<versioning>[a-z-]+?))?\\s(?:ENV|ARG) .+?_VERSION=(?<currentValue>.+?)\\s"
+      ]
     }
   ],
   "packageRules": [
-    {
-      "matchPackageNames": ["HL7/fhir-ig-publisher"],
-      "extractVersion": "^(?<version>.*)$"
-    },
     {
       "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
       "automerge": true
