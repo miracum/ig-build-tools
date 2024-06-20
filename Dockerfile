@@ -39,5 +39,12 @@ curl -LSs "$PUBLISHER_DOWNLOAD_URL" --output /usr/local/bin/publisher.jar
 chmod +x /usr/local/bin/publisher.jar
 EOF
 
+ENV VALIDATOR_JAR_VERSION=6.3.11
+ENV VALIDATOR_JAR_DOWNLOAD_URL="https://github.com/hapifhir/org.hl7.fhir.core/releases/download/${VALIDATOR_JAR_VERSION}/validator_cli.jar"
+RUN <<EOF
+curl -LSs "$VALIDATOR_JAR_DOWNLOAD_URL" --output /usr/local/bin/validator_cli.jar
+chmod +x /usr/local/bin/validator_cli.jar
+EOF
+
 WORKDIR /opt/ig-build-tools/workspace
 ENTRYPOINT ["/bin/bash"]
