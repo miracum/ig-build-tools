@@ -1,4 +1,4 @@
-FROM docker.io/library/eclipse-temurin:11-jre@sha256:22639ff8ab30441ef73b937b9223257404a1fd761de5d29684c5b940c95ac9c6
+FROM docker.io/library/eclipse-temurin:22-jre@sha256:a94532aaca0997d728c6f88927f2209d383a185fbbf7398c8dc41bf4ffd21118
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 WORKDIR /opt/ig-build-tools
 ENV NO_UPDATE_NOTIFIER=true \
