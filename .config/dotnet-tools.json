@@ -3,7 +3,7 @@
   "isRoot": true,
   "tools": {
     "firely.terminal": {
-      "version": "3.2.1",
+      "version": "3.3.1",
       "commands": ["fhir"]
     }
   }
