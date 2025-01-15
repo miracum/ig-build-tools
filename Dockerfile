@@ -25,22 +25,22 @@ rm -rf /var/lib/apt/lists/*
 gem install jekyll bundler
 EOF
 
-COPY package*.json .
-RUN <<EOF
+RUN --mount=type=bind,source=package.json,target=package.json \
+    --mount=type=bind,source=package-lock.json,target=package-lock.json <<EOF
 set -e
 npm clean-install
 sushi --version
 EOF
 
-# renovate: datasource=nuget depName=Firely.Terminal packageName=Firely.Terminal
-ARG FIRELY_TERMINAL_VERSION=3.3.1
+# renovate: datasource=nuget depName=Firely.Terminal
+ARG FIRELY_TERMINAL_VERSION=3.3.2
 RUN <<EOF
 set -e
 dotnet tool install --global Firely.Terminal --version ${FIRELY_TERMINAL_VERSION}
 fhir --version
 EOF
 
-# renovate: datasource=github-releases depName=HL7/fhir-ig-publisher packageName=HL7/fhir-ig-publisher
+# renovate: datasource=github-releases depName=HL7/fhir-ig-publisher
 ARG PUBLISHER_VERSION=1.7.1
 ARG PUBLISHER_DOWNLOAD_URL="https://github.com/HL7/fhir-ig-publisher/releases/download/${PUBLISHER_VERSION}/publisher.jar"
 RUN <<EOF
@@ -48,7 +48,7 @@ curl -LSs "$PUBLISHER_DOWNLOAD_URL" --output /usr/local/bin/publisher.jar
 chmod +x /usr/local/bin/publisher.jar
 EOF
 
-# renovate: datasource=github-releases depName=hapifhir/org.hl7.fhir.core packageName=hapifhir/org.hl7.fhir.core
+# renovate: datasource=github-releases depName=hapifhir/org.hl7.fhir.core
 ARG VALIDATOR_JAR_VERSION=6.4.0
 ARG VALIDATOR_JAR_DOWNLOAD_URL="https://github.com/hapifhir/org.hl7.fhir.core/releases/download/${VALIDATOR_JAR_VERSION}/validator_cli.jar"
 RUN <<EOF
