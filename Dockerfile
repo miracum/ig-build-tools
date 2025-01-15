@@ -12,7 +12,7 @@ ENV NO_UPDATE_NOTIFIER=true \
 RUN <<EOF
 set -e
 apt-get update
-apt-get install -y --no-install-recommends ca-certificates curl gnupg sshpass ruby-full build-essential zlib1g-dev dotnet-sdk-8.0
+apt-get install -y --no-install-recommends ca-certificates curl gnupg sshpass ruby-full build-essential zlib1g-dev dotnet-runtime-9.0
 mkdir -p /etc/apt/keyrings
 curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
 echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_MAJOR.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list
@@ -33,7 +33,7 @@ sushi --version
 EOF
 
 # renovate: datasource=nuget depName=Firely.Terminal
-ARG FIRELY_TERMINAL_VERSION=3.3.1
+ARG FIRELY_TERMINAL_VERSION=3.3.2
 RUN <<EOF
 set -e
 dotnet tool install --global Firely.Terminal --version ${FIRELY_TERMINAL_VERSION}
