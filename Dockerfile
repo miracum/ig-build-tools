@@ -1,4 +1,4 @@
-FROM docker.io/library/eclipse-temurin:21-jre-noble@sha256:860f93f736431d707b8819de4a269d3a21eb0bb853953d8730ed855ae912fefc
+FROM docker.io/library/eclipse-temurin:11-jre@sha256:158f589f1f6a7caaffd7fa3ee6454e4c779c274e039e12b862d25f641fd77a00
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 WORKDIR /opt/ig-build-tools
 ENV NO_UPDATE_NOTIFIER=true \
@@ -33,7 +33,7 @@ sushi --version
 EOF
 
 # renovate: datasource=nuget depName=Firely.Terminal
-ARG FIRELY_TERMINAL_VERSION=3.3.1
+ARG FIRELY_TERMINAL_VERSION=3.3.2
 RUN <<EOF
 set -e
 dotnet tool install --global Firely.Terminal --version ${FIRELY_TERMINAL_VERSION}
