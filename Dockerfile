@@ -1,4 +1,4 @@
-FROM docker.io/library/eclipse-temurin:11-jre@sha256:158f589f1f6a7caaffd7fa3ee6454e4c779c274e039e12b862d25f641fd77a00
+FROM docker.io/library/eclipse-temurin:21-jre-noble@sha256:860f93f736431d707b8819de4a269d3a21eb0bb853953d8730ed855ae912fefc
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 WORKDIR /opt/ig-build-tools
 ENV NO_UPDATE_NOTIFIER=true \
@@ -12,7 +12,7 @@ ENV NO_UPDATE_NOTIFIER=true \
 RUN <<EOF
 set -e
 apt-get update
-apt-get install -y --no-install-recommends software-properties-common ca-certificates curl gnupg sshpass ruby-full build-essential zlib1g-dev dotnet-sdk-8.0
+apt-get install -y --no-install-recommends ca-certificates curl gnupg sshpass ruby-full build-essential zlib1g-dev dotnet-sdk-8.0
 mkdir -p /etc/apt/keyrings
 curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
 echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_MAJOR.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list
@@ -25,8 +25,8 @@ rm -rf /var/lib/apt/lists/*
 gem install jekyll bundler
 EOF
 
-COPY package*.json .
-RUN <<EOF
+RUN --mount=type=bind,source=package.json,target=package.json \
+    --mount=type=bind,source=package-lock.json,target=package-lock.json <<EOF
 set -e
 npm clean-install
 sushi --version
