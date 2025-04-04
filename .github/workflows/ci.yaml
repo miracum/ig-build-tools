@@ -8,11 +8,12 @@ on:
   pull_request:
     branches: [master]
 
-permissions: read-all
+permissions:
+  contents: read
 
 jobs:
   build:
-    uses: miracum/.github/.github/workflows/standard-build.yaml@b09452445e168de479d5059026e8e8a54d11c8d8 # v1.13.2
+    uses: miracum/.github/.github/workflows/standard-build.yaml@9a27b02b4570891080d1dc1397d2af06f5adab14 # v1.16.7
     permissions:
       contents: write
       id-token: write
@@ -27,7 +28,7 @@ jobs:
       github-token: ${{ secrets.GITHUB_TOKEN }}
 
   lint:
-    uses: miracum/.github/.github/workflows/standard-lint.yaml@b09452445e168de479d5059026e8e8a54d11c8d8 # v1.13.2
+    uses: miracum/.github/.github/workflows/standard-lint.yaml@9a27b02b4570891080d1dc1397d2af06f5adab14 # v1.16.7
     permissions:
       contents: read
       pull-requests: write
@@ -42,7 +43,7 @@ jobs:
       github-token: ${{ secrets.GITHUB_TOKEN }}
 
   release:
-    uses: miracum/.github/.github/workflows/standard-release.yaml@b09452445e168de479d5059026e8e8a54d11c8d8 # v1.13.2
+    uses: miracum/.github/.github/workflows/standard-release.yaml@9a27b02b4570891080d1dc1397d2af06f5adab14 # v1.16.7
     needs:
       - build
     permissions:
