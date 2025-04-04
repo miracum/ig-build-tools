@@ -1,2 +1,5 @@
 # allow running the container as root
 DS002
+
+# Message: The instruction 'RUN <package-manager> update' should always be followed by '<package-manager> install' in the same RUN statement.
+DS017
