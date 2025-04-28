@@ -32,7 +32,7 @@ npm clean-install
 sushi --version
 EOF
 
-# renovate: datasource=nuget depName=Firely.Terminal
+# renovate: datasource=nuget depName=Firely.Terminal extractVersion=^(?<version>.*)$
 ARG FIRELY_TERMINAL_VERSION=3.3.2
 RUN <<EOF
 set -e
