@@ -33,7 +33,7 @@ sushi --version
 EOF
 
 # renovate: datasource=nuget depName=Firely.Terminal extractVersion=^(?<version>.*)$
-ARG FIRELY_TERMINAL_VERSION=3.4.0
+ARG FIRELY_TERMINAL_VERSION=3.5.0-beta-1
 RUN <<EOF
 set -e
 dotnet tool install --global Firely.Terminal --version ${FIRELY_TERMINAL_VERSION}
