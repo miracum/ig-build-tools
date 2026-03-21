@@ -4,7 +4,7 @@ WORKDIR /opt/ig-build-tools
 ENV NO_UPDATE_NOTIFIER=true \
     NODE_ENV=production \
     JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF-8" \
-    NODE_MAJOR=22 \
+    NODE_MAJOR=24 \
     DOTNET_CLI_TELEMETRY_OPTOUT=1 \
     PATH="$PATH:/opt/ig-build-tools/node_modules/.bin:/root/.dotnet/tools"
 
