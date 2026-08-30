@@ -33,15 +33,15 @@ sushi --version
 EOF
 
 # renovate: datasource=nuget depName=Firely.Terminal extractVersion=^(?<version>.*)$
-ARG FIRELY_TERMINAL_VERSION=3.5.0
+ARG FIRELY_TERMINAL_VERSION=3.4.0
 RUN <<EOF
 set -e
 dotnet tool install --global Firely.Terminal --version ${FIRELY_TERMINAL_VERSION}
 fhir --version
 EOF
 
-# renovate: datasource=github-releases depName=HL7/fhir-ig-publisher
-ARG PUBLISHER_VERSION=1.7.1
+# renovate: datasource=github-releases depName=HL7/fhir-ig-publisher extractVersion=^(?<version>.*)$
+ARG PUBLISHER_VERSION=2.3.3
 ARG PUBLISHER_DOWNLOAD_URL="https://github.com/HL7/fhir-ig-publisher/releases/download/${PUBLISHER_VERSION}/publisher.jar"
 RUN <<EOF
 curl -LSs "$PUBLISHER_DOWNLOAD_URL" --output /usr/local/bin/publisher.jar
@@ -49,7 +49,7 @@ chmod +x /usr/local/bin/publisher.jar
 EOF
 
 # renovate: datasource=github-releases depName=hapifhir/org.hl7.fhir.core extractVersion=^(?<version>.*)$
-ARG VALIDATOR_JAR_VERSION=6.10.2
+ARG VALIDATOR_JAR_VERSION=6.10.3
 ARG VALIDATOR_JAR_DOWNLOAD_URL="https://github.com/hapifhir/org.hl7.fhir.core/releases/download/${VALIDATOR_JAR_VERSION}/validator_cli.jar"
 RUN <<EOF
 curl -LSs "$VALIDATOR_JAR_DOWNLOAD_URL" --output /usr/local/bin/validator_cli.jar
