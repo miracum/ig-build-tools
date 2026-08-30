@@ -52,8 +52,15 @@ EOF
 ARG VALIDATOR_JAR_VERSION=6.10.3
 ARG VALIDATOR_JAR_DOWNLOAD_URL="https://github.com/hapifhir/org.hl7.fhir.core/releases/download/${VALIDATOR_JAR_VERSION}/validator_cli.jar"
 RUN <<EOF
+set -e
 curl -LSs "$VALIDATOR_JAR_DOWNLOAD_URL" --output /usr/local/bin/validator_cli.jar
 chmod +x /usr/local/bin/validator_cli.jar
+# pre-populate the FHIR package cache (~/.fhir/packages) with the validator's own
+# support packages (cross-version extensions, terminology closure packages) that it
+# otherwise downloads on first use for any R4 validation run, regardless of which IGs
+# are being validated. Baking them into the image avoids a package registry dependency
+# during CI runs.
+java -jar /usr/local/bin/validator_cli.jar -version 4.0.1 -tx n/a
 EOF
 
 WORKDIR /opt/ig-build-tools/workspace
