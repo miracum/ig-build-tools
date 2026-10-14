@@ -49,7 +49,7 @@ chmod +x /usr/local/bin/publisher.jar
 EOF
 
 # renovate: datasource=github-releases depName=hapifhir/org.hl7.fhir.core extractVersion=^(?<version>.*)$
-ARG VALIDATOR_JAR_VERSION=6.10.3
+ARG VALIDATOR_JAR_VERSION=7.0.1
 ARG VALIDATOR_JAR_DOWNLOAD_URL="https://github.com/hapifhir/org.hl7.fhir.core/releases/download/${VALIDATOR_JAR_VERSION}/validator_cli.jar"
 RUN <<EOF
 set -e
