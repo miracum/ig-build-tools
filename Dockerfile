@@ -41,7 +41,7 @@ fhir --version
 EOF
 
 # renovate: datasource=github-releases depName=HL7/fhir-ig-publisher extractVersion=^(?<version>.*)$
-ARG PUBLISHER_VERSION=2.3.3
+ARG PUBLISHER_VERSION=3.0.1
 ARG PUBLISHER_DOWNLOAD_URL="https://github.com/HL7/fhir-ig-publisher/releases/download/${PUBLISHER_VERSION}/publisher.jar"
 RUN <<EOF
 curl -LSs "$PUBLISHER_DOWNLOAD_URL" --output /usr/local/bin/publisher.jar
