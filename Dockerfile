@@ -41,7 +41,7 @@ fhir --version
 EOF
 
 # renovate: datasource=github-releases depName=HL7/fhir-ig-publisher extractVersion=^(?<version>.*)$
-ARG PUBLISHER_VERSION=2.3.5
+ARG PUBLISHER_VERSION=3.0.1
 ARG PUBLISHER_DOWNLOAD_URL="https://github.com/HL7/fhir-ig-publisher/releases/download/${PUBLISHER_VERSION}/publisher.jar"
 RUN <<EOF
 curl -LSs "$PUBLISHER_DOWNLOAD_URL" --output /usr/local/bin/publisher.jar
@@ -49,7 +49,7 @@ chmod +x /usr/local/bin/publisher.jar
 EOF
 
 # renovate: datasource=github-releases depName=hapifhir/org.hl7.fhir.core extractVersion=^(?<version>.*)$
-ARG VALIDATOR_JAR_VERSION=7.0.0
+ARG VALIDATOR_JAR_VERSION=7.0.2
 ARG VALIDATOR_JAR_DOWNLOAD_URL="https://github.com/hapifhir/org.hl7.fhir.core/releases/download/${VALIDATOR_JAR_VERSION}/validator_cli.jar"
 RUN <<EOF
 set -e
