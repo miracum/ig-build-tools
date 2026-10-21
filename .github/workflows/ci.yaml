@@ -13,7 +13,7 @@ permissions:
 
 jobs:
   build:
-    uses: miracum/.github/.github/workflows/standard-build.yaml@074c1a65db6f09850cd80f38efe230036febb44e # v1.29.2
+    uses: miracum/.github/.github/workflows/standard-build.yaml@9b731cc069e92b534c819d2b6f250723b8f2d216 # v1.31.1
     permissions:
       contents: write
       id-token: write
@@ -26,11 +26,9 @@ jobs:
     with:
       enable-build-test-layer: false
       enable-upload-test-image: false
-    secrets:
-      github-token: ${{ secrets.GITHUB_TOKEN }}
 
   lint:
-    uses: miracum/.github/.github/workflows/standard-lint.yaml@074c1a65db6f09850cd80f38efe230036febb44e # v1.29.2
+    uses: miracum/.github/.github/workflows/standard-lint.yaml@9b731cc069e92b534c819d2b6f250723b8f2d216 # v1.31.1
     permissions:
       contents: read
       pull-requests: write
@@ -40,11 +38,9 @@ jobs:
     with:
       enable-codeql: false
       enable-validate-gradle-wrapper: false
-    secrets:
-      github-token: ${{ secrets.GITHUB_TOKEN }}
 
   release:
-    uses: miracum/.github/.github/workflows/standard-release.yaml@074c1a65db6f09850cd80f38efe230036febb44e # v1.29.2
+    uses: miracum/.github/.github/workflows/standard-release.yaml@9b731cc069e92b534c819d2b6f250723b8f2d216 # v1.31.1
     needs:
       - build
     permissions:
