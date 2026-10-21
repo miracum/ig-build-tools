@@ -44,8 +44,12 @@ EOF
 ARG PUBLISHER_VERSION=3.0.1
 ARG PUBLISHER_DOWNLOAD_URL="https://github.com/HL7/fhir-ig-publisher/releases/download/${PUBLISHER_VERSION}/publisher.jar"
 RUN <<EOF
+set -e
 curl -LSs "$PUBLISHER_DOWNLOAD_URL" --output /usr/local/bin/publisher.jar
 chmod +x /usr/local/bin/publisher.jar
+# recent IG templates' _genonce.sh look for the publisher in ${FHIR_PUBLISHER_HOME:-$HOME/.fhir/tools/publisher}
+mkdir -p /root/.fhir/tools/publisher
+ln -s /usr/local/bin/publisher.jar /root/.fhir/tools/publisher/publisher.jar
 EOF
 
 # renovate: datasource=github-releases depName=hapifhir/org.hl7.fhir.core extractVersion=^(?<version>.*)$
