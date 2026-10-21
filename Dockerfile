@@ -44,8 +44,12 @@ EOF
 ARG PUBLISHER_VERSION=3.0.1
 ARG PUBLISHER_DOWNLOAD_URL="https://github.com/HL7/fhir-ig-publisher/releases/download/${PUBLISHER_VERSION}/publisher.jar"
 RUN <<EOF
+set -e
 curl -LSs "$PUBLISHER_DOWNLOAD_URL" --output /usr/local/bin/publisher.jar
 chmod +x /usr/local/bin/publisher.jar
+# recent IG templates' _genonce.sh look for the publisher in ${FHIR_PUBLISHER_HOME:-$HOME/.fhir/tools/publisher}
+mkdir -p /root/.fhir/tools/publisher
+ln -s /usr/local/bin/publisher.jar /root/.fhir/tools/publisher/publisher.jar
 EOF
 
 # renovate: datasource=github-releases depName=hapifhir/org.hl7.fhir.core extractVersion=^(?<version>.*)$
@@ -61,6 +65,15 @@ chmod +x /usr/local/bin/validator_cli.jar
 # are being validated. Baking them into the image avoids a package registry dependency
 # during CI runs.
 java -jar /usr/local/bin/validator_cli.jar -version 4.0.1 -tx n/a
+EOF
+
+# renovate: datasource=github-releases depName=synthetichealth/synthea
+ARG SYNTHEA_VERSION=4.0.0
+ARG SYNTHEA_DOWNLOAD_URL="https://github.com/synthetichealth/synthea/releases/download/v${SYNTHEA_VERSION}/synthea-with-dependencies.jar"
+RUN <<EOF
+set -e
+curl -LSs "$SYNTHEA_DOWNLOAD_URL" --output /usr/local/bin/synthea.jar
+chmod +x /usr/local/bin/synthea.jar
 EOF
 
 WORKDIR /opt/ig-build-tools/workspace
