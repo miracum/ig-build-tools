@@ -29,3 +29,4 @@ $ java -jar /usr/local/bin/publisher.jar -ig ig.ini
 - [SUSHI](https://github.com/FHIR/sushi)
 - [Firely.Terminal](https://fire.ly/products/firely-terminal/)
 - [IG Publisher](https://github.com/HL7/fhir-ig-publisher)
+- [Synthea](https://github.com/synthetichealth/synthea) (`java -jar /usr/local/bin/synthea.jar`)

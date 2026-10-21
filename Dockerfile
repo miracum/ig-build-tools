@@ -63,5 +63,14 @@ chmod +x /usr/local/bin/validator_cli.jar
 java -jar /usr/local/bin/validator_cli.jar -version 4.0.1 -tx n/a
 EOF
 
+# renovate: datasource=github-releases depName=synthetichealth/synthea
+ARG SYNTHEA_VERSION=4.0.0
+ARG SYNTHEA_DOWNLOAD_URL="https://github.com/synthetichealth/synthea/releases/download/v${SYNTHEA_VERSION}/synthea-with-dependencies.jar"
+RUN <<EOF
+set -e
+curl -LSs "$SYNTHEA_DOWNLOAD_URL" --output /usr/local/bin/synthea.jar
+chmod +x /usr/local/bin/synthea.jar
+EOF
+
 WORKDIR /opt/ig-build-tools/workspace
 ENTRYPOINT ["/bin/bash"]
