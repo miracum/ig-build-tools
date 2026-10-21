@@ -1,3 +1,9 @@
+FROM mcr.microsoft.com/dotnet/sdk:8.0-noble@sha256:35f39dc26de234f9bd24d482b8c7a9391d263dfbc1e62f24bb59de1168dd8d21 AS firely-terminal
+ENV DOTNET_CLI_TELEMETRY_OPTOUT=1
+# renovate: datasource=nuget depName=Firely.Terminal extractVersion=^(?<version>.*)$
+ARG FIRELY_TERMINAL_VERSION=3.4.0
+RUN dotnet tool install --tool-path /opt/firely-terminal Firely.Terminal --version ${FIRELY_TERMINAL_VERSION}
+
 FROM docker.io/library/eclipse-temurin:21-jre-noble@sha256:96975602e131485862eb8cd32927face8a06d7591a5e865944b634a701d9df72
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 WORKDIR /opt/ig-build-tools
@@ -5,24 +11,26 @@ ENV NO_UPDATE_NOTIFIER=true \
     NODE_ENV=production \
     JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF-8" \
     NODE_MAJOR=24 \
-    DOTNET_CLI_TELEMETRY_OPTOUT=1 \
-    PATH="$PATH:/opt/ig-build-tools/node_modules/.bin:/root/.dotnet/tools"
+    DOTNET_ROOT=/usr/lib/dotnet \
+    PATH="$PATH:/opt/ig-build-tools/node_modules/.bin:/opt/firely-terminal"
 
 # hadolint ignore=DL3008,DL3028
 RUN <<EOF
 set -e
 apt-get update
-apt-get install -y --no-install-recommends ca-certificates curl gnupg sshpass ruby-full build-essential zlib1g-dev dotnet-sdk-8.0 git jq
+apt-get install -y --no-install-recommends ca-certificates curl gnupg sshpass ruby ruby-dev build-essential zlib1g-dev dotnet-runtime-8.0 git jq
 mkdir -p /etc/apt/keyrings
 curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
 echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_MAJOR.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list
 apt-get update
 apt-get install -y --no-install-recommends nodejs
 
+gem install jekyll bundler
+# the compilers are only needed to build the gems' native extensions
+apt-get purge -y --auto-remove build-essential zlib1g-dev ruby-dev
+
 apt-get clean
 rm -rf /var/lib/apt/lists/*
-
-gem install jekyll bundler
 EOF
 
 RUN --mount=type=bind,source=package.json,target=package.json \
@@ -32,13 +40,8 @@ npm clean-install
 sushi --version
 EOF
 
-# renovate: datasource=nuget depName=Firely.Terminal extractVersion=^(?<version>.*)$
-ARG FIRELY_TERMINAL_VERSION=3.4.0
-RUN <<EOF
-set -e
-dotnet tool install --global Firely.Terminal --version ${FIRELY_TERMINAL_VERSION}
-fhir --version
-EOF
+COPY --from=firely-terminal /opt/firely-terminal /opt/firely-terminal
+RUN fhir --version
 
 # renovate: datasource=github-releases depName=HL7/fhir-ig-publisher extractVersion=^(?<version>.*)$
 ARG PUBLISHER_VERSION=3.0.1
