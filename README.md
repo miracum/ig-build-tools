@@ -30,3 +30,5 @@ $ java -jar /usr/local/bin/publisher.jar -ig ig.ini
 - [Firely.Terminal](https://fire.ly/products/firely-terminal/)
 - [IG Publisher](https://github.com/HL7/fhir-ig-publisher)
 - [Synthea](https://github.com/synthetichealth/synthea) (`java -jar /usr/local/bin/synthea.jar`)
+- [Pathling CLI](https://pathling.csiro.au/docs/libraries/cli) (`pathling`)
+- [blazectl](https://github.com/samply/blazectl)
