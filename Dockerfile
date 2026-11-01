@@ -1,7 +1,7 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0-noble@sha256:35f39dc26de234f9bd24d482b8c7a9391d263dfbc1e62f24bb59de1168dd8d21 AS firely-terminal
 ENV DOTNET_CLI_TELEMETRY_OPTOUT=1
 # renovate: datasource=nuget depName=Firely.Terminal extractVersion=^(?<version>.*)$
-ARG FIRELY_TERMINAL_VERSION=3.4.0
+ARG FIRELY_TERMINAL_VERSION=3.5.0
 RUN dotnet tool install --tool-path /opt/firely-terminal Firely.Terminal --version ${FIRELY_TERMINAL_VERSION}
 
 FROM ghcr.io/astral-sh/uv:0.13.6@sha256:af22a52f5eafef3d78e551599d405c02df61919d18028f0cea8eda93bc9986d0 AS uv
