@@ -81,20 +81,61 @@ curl -LSs "$SYNTHEA_DOWNLOAD_URL" --output /usr/local/bin/synthea.jar
 chmod +x /usr/local/bin/synthea.jar
 EOF
 
+# Spark can only run as users with an entry in /etc/passwd, as Hadoop fails to log in
+# others. This adds one for running the container as non-root, e.g. with --user 65532:65532.
+RUN <<EOF
+set -e
+groupadd --system --gid 65532 nonroot
+useradd --no-log-init --create-home --shell /bin/bash --uid 65532 --gid nonroot nonroot
+EOF
+
 # renovate: datasource=pypi depName=pathling extractVersion=^(?<version>.*)$
 ARG PATHLING_VERSION=10.0.0
+# spark-defaults.conf points the Ivy cache to /opt/ivy instead of ~/.ivy2.5.2, so every user
+# finds the packages resolved at build time, and adds the S3A filesystem
+ENV SPARK_CONF_DIR=/opt/spark/conf
 RUN --mount=from=uv,source=/uv,target=/usr/local/bin/uv <<EOF
 set -e
 export UV_TOOL_DIR=/opt/uv/tools UV_TOOL_BIN_DIR=/usr/local/bin
 uv tool install --no-cache --no-python-downloads --python /usr/bin/python3 "pathling==${PATHLING_VERSION}"
 pathling --version
+
+# hadoop-aws has to match the Hadoop version bundled with pyspark, and resolving it also
+# resolves the AWS SDK version it was built against
+pyspark_dir="$(/opt/uv/tools/pathling/bin/python -c 'import os, pyspark; print(os.path.dirname(pyspark.__file__))')"
+hadoop_version="$(basename "${pyspark_dir}"/jars/hadoop-client-api-*.jar .jar)"
+hadoop_version="${hadoop_version#hadoop-client-api-}"
+/opt/uv/tools/pathling/bin/python -c "
+from pyspark.sql import SparkSession
+SparkSession.builder.config('spark.jars.ivy', '/tmp/s3a-ivy').config(
+    'spark.jars.packages', 'org.apache.hadoop:hadoop-aws:${hadoop_version}'
+).config(
+    # already part of pyspark
+    'spark.jars.excludes', 'org.apache.hadoop:hadoop-client-api,org.apache.hadoop:hadoop-client-runtime'
+).getOrCreate().stop()
+"
+mkdir -p /opt/spark/s3a-jars "${SPARK_CONF_DIR}"
+cp /tmp/s3a-ivy/jars/*.jar /opt/spark/s3a-jars/
+
+# The S3A JARs are added via spark.jars instead of being copied to pyspark's own jars/: the
+# AWS SDK bundle contains unshaded classes of an older Netty version. On pyspark's classpath,
+# they may be loaded instead of Spark's own, depending on the directory's listing order.
+cat > "${SPARK_CONF_DIR}/spark-defaults.conf" <<CONF
+spark.jars.ivy /opt/ivy
+spark.jars /opt/spark/s3a-jars/*.jar
+CONF
+
 # the CLI resolves the Pathling library runtime and Delta Lake JARs from Maven Central
-# into the Ivy cache (~/.ivy2.5.2) whenever it starts a Spark session. Starting one here
-# bakes them into the image, so CI runs don't depend on Maven Central.
-pathling run -c "print(spark.version)"
+# into the Ivy cache whenever it starts a Spark session. Starting one here bakes them into
+# the image, so CI runs don't depend on Maven Central.
+pathling run -c "spark._jvm.org.apache.hadoop.fs.FileSystem.getFileSystemClass('s3a', spark._jsc.hadoopConfiguration())"
+
 # jars/ only duplicates cache/ (Ivy copies the resolved JARs there again on startup, no
-# network needed) and the session leaves another copy of them behind in /tmp
-rm -rf /root/.ivy2.5.2/jars /tmp/spark-* /tmp/blockmgr-*
+# network needed) and the sessions leave more copies of them behind in /tmp
+rm -rf /opt/ivy/jars /tmp/s3a-ivy /tmp/spark-* /tmp/blockmgr-*
+# Spark writes its resolution reports to the cache and updates the cached modules'
+# metadata on every start, so it has to be writable by whichever user runs the CLI
+chmod -R a+rwX /opt/ivy
 EOF
 
 ARG TARGETARCH
