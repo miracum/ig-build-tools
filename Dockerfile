@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:8.0-noble@sha256:35f39dc26de234f9bd24d482b8c7a9391d263dfbc1e62f24bb59de1168dd8d21 AS firely-terminal
+FROM mcr.microsoft.com/dotnet/sdk:8.0-noble@sha256:42eb9e70b190d0cca893d93724e67fb89e7570e4309c4b1c20b7f6016a90202d AS firely-terminal
 ENV DOTNET_CLI_TELEMETRY_OPTOUT=1
 # renovate: datasource=nuget depName=Firely.Terminal extractVersion=^(?<version>.*)$
 ARG FIRELY_TERMINAL_VERSION=3.4.0
