@@ -1,7 +1,7 @@
-FROM mcr.microsoft.com/dotnet/sdk:8.0-noble@sha256:35f39dc26de234f9bd24d482b8c7a9391d263dfbc1e62f24bb59de1168dd8d21 AS firely-terminal
+FROM mcr.microsoft.com/dotnet/sdk:10.0-noble@sha256:212fe4cb74627d5adf9817a4088906ae3edff1bd853bb27565d4b46731efe61e AS firely-terminal
 ENV DOTNET_CLI_TELEMETRY_OPTOUT=1
 # renovate: datasource=nuget depName=Firely.Terminal extractVersion=^(?<version>.*)$
-ARG FIRELY_TERMINAL_VERSION=3.4.0
+ARG FIRELY_TERMINAL_VERSION=4.0.0
 RUN dotnet tool install --tool-path /opt/firely-terminal Firely.Terminal --version ${FIRELY_TERMINAL_VERSION}
 
 FROM ghcr.io/astral-sh/uv:0.13.6@sha256:af22a52f5eafef3d78e551599d405c02df61919d18028f0cea8eda93bc9986d0 AS uv
@@ -20,7 +20,7 @@ ENV NO_UPDATE_NOTIFIER=true \
 RUN <<EOF
 set -e
 apt-get update
-apt-get install -y --no-install-recommends ca-certificates curl gnupg sshpass ruby ruby-dev build-essential zlib1g-dev dotnet-runtime-8.0 git jq python3
+apt-get install -y --no-install-recommends ca-certificates curl gnupg sshpass ruby ruby-dev build-essential zlib1g-dev dotnet-runtime-10.0 git jq python3
 mkdir -p /etc/apt/keyrings
 curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
 echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_MAJOR.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list
